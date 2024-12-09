@@ -209,3 +209,13 @@ td {
   margin: 5px;
   text-align: center;
 }
+
+.whoweare-buttons {
+  background-color: deepskyblue;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  border-width: 0px;
+  width: 120px;
+}
