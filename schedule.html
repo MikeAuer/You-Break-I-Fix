@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Schedule Repair</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <div id="navbar"></div>
+  <h1 class="text-box">Schedule Repair</h1>
+  <div class="schedule-main-flex">
+    <div class="schedule-left">
+      <div class="schedule-header">Service Selection</div>
+      <div class="schedule-options">
+        <select id="schedule-selection" class="schedule-option">
+          <option value="service">Select</option>
+          <option value="service1">Smartphone</option>
+          <option value="service2">Laptop</option>
+          <option value="service3">TV</option>
+          <option value="service4">Internet</option>
+          <option value="service5">Gaming Console</option>
+          <option value="service6">Other</option>
+        </select>
+        <input style="display: none; margin-top: 2px;" id="other-input" type="text" name="otherin">
+        <p id="service-description">Please select a service.</p>
+        <div class="schedule-header">Date and Time</div>
+        <div class="schedule-date-time">
+          <input type="date" id="schedule-date" class="schedule-option">
+          <input type="time" id="schedule-time" class="schedule-option">
+        </div>
+        <div class="schedule-header">Location</div>
+
+        <input type="text" id="schedule-location" class="schedule-option" placeholder="Enter your location">
+        <button onclick="getLocation()">Get Location</button>
+      </div>
+    </div>
+    <div class="schedule-right">
+      <div class="text-box">Review your appointment</div>
+      <hr>
+      <div id="error" class="error-box">This service is currently unavailable</div>
+      <h1 id="item"></h1>
+      <div style="margin-bottom: 100px;"></div>
+      <hr>
+      <div id="review" class="text-box" style="display: none;">
+        at <span id="location"></span><br>
+        on <span id="date"></span><br>
+        at <span id="time"></span>
+      </div>
+      <div style="display: flex; justify-content: center;">
+        <button>submit</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var products;
+
+    fetch('products.json')
+      .then(response => response.json())
+      .then(data => {
+        products = data;
+        console.log(products);
+      });
+
+    console.log(products)
+
+    const scheduleSelection = document.getElementById('schedule-selection'); // schedule selection field
+    const otherInput = document.getElementById('other-input'); // other input field
+    const scheduleDate = document.getElementById('schedule-date'); // schedule date field
+    const scheduleTime = document.getElementById('schedule-time'); // schedule time field
+    const scheduleLocation = document.getElementById('schedule-location'); // schedule location field
+
+    const descriptionField = document.getElementById('service-description'); // description field
+
+    const errorBox = document.getElementById('error') // error box element
+
+    const summary = document.getElementById('review') // summary container
+    const itemField = document.getElementById('item') // item field
+    const locationField = document.getElementById('location') // location field
+    const dateField = document.getElementById('date') // date field
+    const timeField = document.getElementById('time') // time field
+
+    // listen for a change in the schedule selection field
+    scheduleSelection.addEventListener('change', () => {
+      otherInput.style.display = scheduleSelection.value === 'service6' ? 'block' : 'none';
+
+      const selectedOption = products.find(product => product.id === scheduleSelection.value);
+      if (selectedOption) {
+        summary.style.display = 'block';
+        itemField.textContent = selectedOption.name + " $" + selectedOption.price;
+        descriptionField.textContent = selectedOption.description;
+        if (selectedOption.available) errorBox.style.display = "none";
+        else errorBox.style.display = "block";
+      } else {
+        summary.style.display = 'none';
+        descriptionField.textContent = 'Please select a service';
+      }
+    });
+
+    // listen for changes in the date, time, and location fields
+    scheduleDate.addEventListener('change', () => {
+      dateField.textContent = scheduleDate.value;
+    });
+
+    scheduleTime.addEventListener('change', () => {
+      timeField.textContent = scheduleTime.value;
+    });
+
+    scheduleLocation.addEventListener('change', () => {
+      locationField.textContent = scheduleLocation.value;
+    });
+    
+    
+    function getLocation() {
+      const locationFieldReviewEl = document.getElementById('location')
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else { 
+        scheduleLocation.value = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+      const cords = position.coords.latitude + 
+        " " + position.coords.longitude;
+      scheduleLocation.value = cords
+      locationField.textContent = cords
+    }
+
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          scheduleLocation.value = "User denied the request for Geolocation."
+          break;
+        case error.POSITION_UNAVAILABLE:
+          scheduleLocation.value = "Location information is unavailable."
+          break;
+        case error.TIMEOUT:
+          scheduleLocation.value = "The request to get user location timed out."
+          break;
+        case error.UNKNOWN_ERROR:
+          scheduleLocation.value = "An unknown error occurred."
+          break;
+      }
+    }
+  </script>
+</body>
+
+</html>

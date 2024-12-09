@@ -1,0 +1,50 @@
+[
+  {
+    "id": "service1",
+    "name": "Smartphone repair",
+    "description": "Professional repair regarding smartphones.",
+    "price": 79.99,
+    "category": "Repair Services",
+    "available": true
+  },
+  {
+    "id": "service2",
+    "name": "Laptop repair",
+    "description": "Professional repair regarding laptops.",
+    "price": 99.99,
+    "category": "Repair Services",
+    "available": true
+  },
+  {
+    "id": "service3",
+    "name": "TV",
+    "description": "Professional repair regarding Televisions.",
+    "price": 59.99,
+    "category": "Repair Services",
+    "available": true
+  },
+  {
+    "id": "service4",
+    "name": "Internet",
+    "description": "Professional assistance with internet related problems.",
+    "price": 49.99,
+    "category": "Repair Services",
+    "available": false
+  },
+  {
+    "id": "service5",
+    "name": "Gaming Console",
+    "description": "Professional repair regarding Gaming Consoles.",
+    "price": 89.99,
+    "category": "Repair Services",
+    "available": true
+  },
+  {
+    "id": "service6",
+    "name": "other",
+    "description": "Other repair services. Prices vary depending on the service.",
+    "price": 0,
+    "category": "Repair Services",
+    "available": true
+  }
+]
